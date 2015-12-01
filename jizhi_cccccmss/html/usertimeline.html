@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>zzspider-知注科技后台数据管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CMS jizhiapp 机智">
+    <meta name="author" content="LastyClementine">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/test.css">
+    <script src="../js/angular.min.js"></script>
+
+</head>
+<body  ng-app="myApp" ng-controller="MySQLCtrl">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-collapse collapse">
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" style="margin-top: -10px;margin-bottom: -10px;" placeholder="搜索本项目内容...">
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="leaf-nav">
+    <div class="all-nav">
+        <div class="item">
+            <div class="product">
+                <div id="wrapper">
+                    <div id="sidebar-menu">
+                        <div id="toggleMenu">
+                            <div class="list"></div>
+                            <div class="thumbs"></div>
+                        </div>
+                        <ul>
+                            <li class="DASHBOARD"><span>预览</span></li>
+                            <li class="USERS"><span>用户</span></li>
+                            <li class="COLLECTIONS"><span>单 件</span></li>
+                            <li class="ARCHIVED"><span>整 机</span></li>
+                            <li class="FILTERS"><span>组 合</span></li>
+                            <li class="SETTINGS"><span>设 置</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="product-wrap pos04" style="display: none; left: 95px;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-sm-9 col-md-10 main" style="margin-left: 170px">
+    <h2 class="sub-header">用户流水列表
+        &nbsp;<button class="btn btn-success" ng-click="showallusertimneline()" style="padding: 2px 5px; margin-bottom: 0">
+                <span class="glyphicon glyphicon-save"></span>showall
+            </button>&nbsp;&nbsp;<button class="btn btn-success" ng-click="makelogText()" style="padding: 2px 5px; margin-bottom: 0">
+            <span class="glyphicon glyphicon-save"></span>makelogTest
+        </button></h2>
+    <br/>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>流水号</th>
+                <th>时间戳</th>
+                <th>用户账号</th>
+                <th>用户行为</th>
+                <th>编辑选项</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="x in usertimelinelogs">
+                <td>{{ x.logid }}</td>
+                <td>{{ x.timestamp }}</td>
+                <td>{{ x.userid }}</td>
+                <td>{{ x.description }}</td>
+                <td><button class="btn" style="padding: 3px 10px;" ng-click="editUser(x.id)"><span class="glyphicon glyphicon-pencil"></span>编辑</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr style="margin-top: 0">
+    <div class="table-responsive">
+        <table class="table table-striped text-center">
+            <tbody>
+            <tr>
+                <td class="form-group">
+                    <div class="">
+                        <input type="text" ng-model="inLogid" ng-disabled="!edit" placeholder="按流水号删除">
+                        <button class="btn btn-success" ng-click="delBylogid()" style="padding: 2px 5px; margin-bottom: 0">
+                            <span class="glyphicon glyphicon-save"></span>delete
+                        </button>
+                    </div>
+                </td>
+
+                <td class="form-group">
+                    <div class="">
+                        <input type="text" ng-model="inUsername" ng-disabled="!edit" placeholder="按用户删除">
+                        <button class="btn btn-success" ng-click="delByuserid()" style="padding: 2px 5px; margin-bottom: 0">
+                            <span class="glyphicon glyphicon-save"></span>delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table></div>
+        <div><p>{{errmention}}</p></div>
+    <input type="text" name="输入框ID" id="输入框ID" onkeypress="if(event.keyCode==13) {btn.click();return false;}"/>
+    <input type="submit" name="btn" id="btn" value="提交" onclick="alert(输入框ID.value);return false;" />
+    <br/>
+</div>
+
+<script src="../js/usertimeline.js" type="text/javascript"></script>
+
+<script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-2.1.1.min.js"><\/script>')</script>
+<script src="http://libs.useso.com/js/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $('.sortable-accordion div').show();
+            $('.sortable-accordion div').slideToggle('slow');
+            $('.sortable-accordion h3').click(function () {
+                $(this).next('.inner').slideToggle().siblings('.inner:visible').slideUp();
+                $(this).toggleClass('current');
+                $(this).siblings('h3').removeClass('current');
+            });
+        });
+        $('.sortable').sortable({ placeholder: 'ui-sortable-placeholder' }).find('li').append('<span class=\'options\'></span>');
+        $('#submenu a').click(function () {
+            return false;
+        });
+        $('.options').click(function () {
+            var childpos = $(this).offset();
+            var parentpos = $(this).parent().offset();
+            var posLeft = childpos.left - parentpos.left;
+            $('#submenu').css({
+                'top': childpos.top - 10 + 'px',
+                'left': posLeft + 420 + 'px'
+            }).fadeIn(200);
+            $('#submenu').mouseleave(function () {
+                $(this).fadeOut(200);
+            });
+        });
+        $('#toggleMenu .list').click(function () {
+            $('#sidebar-menu li span').animate({
+                'opacity': 1,
+                'margin-left': '0px'
+            });
+            $('#sidebar-menu').toggleClass('animate');
+            $('#toggleMenu .list').fadeOut();
+            $('#toggleMenu .thumbs').fadeIn();
+        });
+        $('#toggleMenu .thumbs').click(function () {
+            $('#sidebar-menu li span').css({
+                'opacity': 0,
+                'margin-left': '10px'
+            });
+            $('#sidebar-menu').toggleClass('animate');
+            $('#toggleMenu .thumbs').fadeOut();
+            $('#toggleMenu .list').fadeIn();
+        });
+        $('#sidebar-menu li').click(function () {
+            $('#sidebar-menu li').not(this).removeClass('selected');
+            $(this).toggleClass('selected');
+        });
+        $('#drop-select').click(function () {
+            $('#dropdown-list').toggleClass('animate');
+        });
+        $('#dropdown-list li').click(function () {
+            $('#dropdown-list').removeClass('animate');
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

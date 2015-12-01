@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>zzspider-知注科技后台数据管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CMS jizhiapp 机智">
+    <meta name="author" content="LastyClementine">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/test.css">
+    <script src="../js/angular.min.js"></script>
+
+</head>
+<body  ng-app="myApp" ng-controller="MySQLCtrl">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class="navbar-collapse collapse">
+                    <!--<ul class="nav navbar-nav navbar-right">-->
+                        <!--<li><a href="#">Dashboard</a></li>-->
+                        <!--<li><a href="#">Settings</a></li>-->
+                        <!--<li><a href="#">Profile</a></li>-->
+                        <!--<li><a href="#">Help</a></li>-->
+                    <!--</ul>-->
+                    <form class="navbar-form navbar-right">
+                        <input type="text" class="form-control" style="margin-top: -10px;margin-bottom: -10px;" placeholder="搜索本项目内容...">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="leaf-nav">
+        <div class="all-nav">
+            <div class="item">
+                <div class="product">
+                    <div id="wrapper">
+                        <div id="sidebar-menu">
+                            <div id="toggleMenu">
+                                <div class="list"></div>
+                                <div class="thumbs"></div>
+                            </div>
+                            <ul>
+                                <li class="DASHBOARD"><span>预览</span></li>
+                                <li class="USERS"><span>用户</span></li>
+                                <li class="COLLECTIONS"><span>单 件</span></li>
+                                <li class="ARCHIVED"><span>整 机</span></li>
+                                <li class="FILTERS"><span>组 合</span></li>
+                                <li class="SETTINGS"><span>设 置</span></li>
+                                <!--<li class="PRIORITY"><span ng-click="search()">用 户</span></li>-->
+                                <!--<li class="DELETED"><span>组合</span></li>-->
+                                <!--<li class="TRENDS"><span>TRENDS</span></li>-->
+                                <!--<li class="TASKS"><span>TASKS</span></li>-->
+                                <!--<li class="STATS"><span>STATS</span></li>-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-wrap pos04" style="display: none; left: 95px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-9 col-md-10 main" style="margin-left: 170px">
+        <h2 class="sub-header">用户列表&nbsp;<button class="btn btn-success" ng-click="showall()" style="padding: 2px 5px; margin-bottom: 0">
+            <span class="glyphicon glyphicon-save"></span>showall
+        </button></h2>
+        <br/>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>用户ID</th>
+                    <th>账号</th>
+                    <th>密码</th>
+                    <th>手机号</th>
+                    <!--<th>收藏</th>-->
+                    <th>权限等级</th>
+                    <th>编辑选项</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="x in user">
+                    <td>{{ $index }}</td>
+                    <td>{{ x.userid }}</td>
+                    <td>{{ x.username }}</td>
+                    <td>{{ x.password }}</td>
+                    <td>{{ x.phonenumber }}</td>
+                    <td>{{ x.priority }}</td>
+                    <td><button class="btn" style="padding: 3px 10px;" ng-click="editUser(x.userid,x.username,x.password,x.phonenumber,x.priority)"><span class="glyphicon glyphicon-pencil"></span>编辑</button>
+                        &nbsp;&nbsp;&nbsp;<button class="btn btn-danger" style="padding: 2px 10px;" ng-click="deluser(x.username)"><span class="glyphicon glyphicon-pencil"></span>X</button></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr style="margin-top: 0">
+            <button class="btn btn-success" ng-click="editUser('new')" style="margin-top: 0;margin-bottom: 0">
+                <span class="glyphicon glyphicon-user"></span>创建新用户
+            </button>
+        <hr/>
+        <div class="table-responsive">
+        <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td ><p ng-show="edit" style="margin-top: 3px">创建新用户:</p><p ng-hide="edit" style="margin-top: 3px">&nbsp;&nbsp;&nbsp;编辑用户:</p></td>
+            <td class="form-group">
+                <div class="">
+                    <input type="text" ng-model="inName" ng-disabled="!edit" placeholder="账号">
+                </div>
+            </td>
+            <td class="form-group">
+                <div class="">
+                    <input type="password" ng-model="inPassword" placeholder="密码">
+                </div>
+            </td>
+            <td class="form-group">
+                <div class="">
+                    <input type="text" ng-model="inPhoneNum" placeholder="手机号">
+                </div>
+            </td>
+            <td class="form-group">
+                <div class="">
+                    <input type="text" ng-model="inAuthority" placeholder="权限等级">
+                </div>
+            </td>
+            <td class="form-group">
+                <div class="">
+                    <button class="btn btn-success" ng-click="adduser()" style="padding: 2px 5px; margin-bottom: 0">
+                        <span class="glyphicon glyphicon-save"></span>提交创建
+                    </button>
+                    <button class="btn btn-success" ng-click="updateuser()" style="padding: 2px 5px; margin-bottom: 0">
+                        <span class="glyphicon glyphicon-save"></span>提交修改
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+            </table></div>
+        <div><p>{{errmention}}</p></div>
+        <br/>
+    </div>
+        <script src="../js/myUsers.js" type="text/javascript"></script>
+
+        <!--<h2 class="sub-header">单件信息管理</h2>-->
+        <!--<div class="table-responsive">-->
+            <!--<table class="table table-striped">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>单件序号</th>-->
+                    <!--<th>名字</th>-->
+                    <!--<th>分类</th>-->
+                    <!--<th>分数</th>-->
+                    <!--<th>评分</th>-->
+                    <!--<th>价格</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>1,001</td>-->
+                    <!--<td>Lorem</td>-->
+                    <!--<td>ipsum</td>-->
+                    <!--<td>dolor</td>-->
+                    <!--<td>sit</td>-->
+                    <!--<td>sit</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<h2 class="sub-header">整机信息管理</h2>-->
+        <!--<div class="table-responsive">-->
+            <!--<table class="table table-striped">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>整机序号</th>-->
+                    <!--<th>名字</th>-->
+                    <!--<th>配件序号</th>-->
+                    <!--<th>描述</th>-->
+                    <!--<th>Header</th>-->
+                    <!--<th>Header</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>1,001</td>-->
+                    <!--<td>Lorem</td>-->
+                    <!--<td>ipsum</td>-->
+                    <!--<td>dolor</td>-->
+                    <!--<td>sit</td>-->
+                    <!--<td>sit</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+        <!--<h2 class="sub-header">整机配件列表</h2>-->
+        <!--<div class="table-responsive">-->
+            <!--<table class="table table-striped">-->
+                <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th>配置序号</th>-->
+                    <!--<th>整机序号</th>-->
+                    <!--<th>处理器</th>-->
+                    <!--<th>显卡</th>-->
+                    <!--<th>显示器</th>-->
+                    <!--<th>主板</th>-->
+                    <!--<th>内存条</th>-->
+                    <!--<th>硬盘</th>-->
+                    <!--<th>总价格</th>-->
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr>-->
+                    <!--<td>1,001</td>-->
+                    <!--<td>Lorem</td>-->
+                    <!--<td>ipsum</td>-->
+                    <!--<td>ipsum</td>-->
+                    <!--<td>dolor</td>-->
+                    <!--<td>dolor</td>-->
+                    <!--<td>sit</td>-->
+                    <!--<td>sit</td>-->
+                    <!--<td>sit</td>-->
+                <!--</tr>-->
+                <!--</tbody>-->
+            <!--</table>-->
+        <!--</div>-->
+
+
+
+<script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
+<script>window.jQuery || document.write('<script src="js/jquery-2.1.1.min.js"><\/script>')</script>
+<script src="http://libs.useso.com/js/jqueryui/1.10.4/jquery-ui.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $('.sortable-accordion div').show();
+            $('.sortable-accordion div').slideToggle('slow');
+            $('.sortable-accordion h3').click(function () {
+                $(this).next('.inner').slideToggle().siblings('.inner:visible').slideUp();
+                $(this).toggleClass('current');
+                $(this).siblings('h3').removeClass('current');
+            });
+        });
+        $('.sortable').sortable({ placeholder: 'ui-sortable-placeholder' }).find('li').append('<span class=\'options\'></span>');
+        $('#submenu a').click(function () {
+            return false;
+        });
+        $('.options').click(function () {
+            var childpos = $(this).offset();
+            var parentpos = $(this).parent().offset();
+            var posLeft = childpos.left - parentpos.left;
+            $('#submenu').css({
+                'top': childpos.top - 10 + 'px',
+                'left': posLeft + 420 + 'px'
+            }).fadeIn(200);
+            $('#submenu').mouseleave(function () {
+                $(this).fadeOut(200);
+            });
+        });
+        $('#toggleMenu .list').click(function () {
+            $('#sidebar-menu li span').animate({
+                'opacity': 1,
+                'margin-left': '0px'
+            });
+            $('#sidebar-menu').toggleClass('animate');
+            $('#toggleMenu .list').fadeOut();
+            $('#toggleMenu .thumbs').fadeIn();
+        });
+        $('#toggleMenu .thumbs').click(function () {
+            $('#sidebar-menu li span').css({
+                'opacity': 0,
+                'margin-left': '10px'
+            });
+            $('#sidebar-menu').toggleClass('animate');
+            $('#toggleMenu .thumbs').fadeOut();
+            $('#toggleMenu .list').fadeIn();
+        });
+        $('#sidebar-menu li').click(function () {
+            $('#sidebar-menu li').not(this).removeClass('selected');
+            $(this).toggleClass('selected');
+        });
+        $('#drop-select').click(function () {
+            $('#dropdown-list').toggleClass('animate');
+        });
+        $('#dropdown-list li').click(function () {
+            $('#dropdown-list').removeClass('animate');
+        });
+    });
+</script>
+
+
+
+
+</body>
+</html>

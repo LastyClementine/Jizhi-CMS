@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>zzspider-知注科技后台数据管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CMS jizhiapp 机智">
+    <meta name="author" content="LastyClementine">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/account.css">
+</head>
+<body>
+
+<div class="login">
+    <i ripple>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path fill="#C7C7C7" d="..."/>
+        </svg>
+    </i>
+    <div>
+        <img  class="photo" src="../img/ZZlogo.png" alt="logo"/>
+    </div>
+    <span>请用管理员号码登陆 <a href="http://www.zzspider.com"><strong style="color: coral"> 知注科技</strong></a> 后台管理系统</span>
+    <form action="" id="login-form">
+        <div id="u" class="form-group">
+            <input id="username" spellcheck=false class="form-control" name="username" type="text" size="18" alt="login" required="">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="username" class="float-label">管理员序号</label>
+            <erroru>
+                Username is required
+                <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        ...
+                    </svg>
+                </i>
+            </erroru>
+        </div>
+        <div id="p" class="form-group">
+            <input id="password" class="form-control" spellcheck=false name="password" type="password" size="18" alt="login" required="">
+            <span class="form-highlight"></span>
+            <span class="form-bar"></span>
+            <label for="password" class="float-label">密码</label>
+            <errorp>
+                Password is required
+                <i>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        ...
+                    </svg>
+                </i>
+            </errorp>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" id="rem">
+            <!--<label for="rem">Stay Signed in</label>-->
+            <button id="submit" type="submit" ripple>Sign in</button>
+        </div>
+    </form>
+</div>
+
+<div class="footer">
+    <hr/>
+    <p>Copyright © 知注科技 All Right Reserved.</p>
+</div>
+
+
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery-2.1.4.min.js"></script>
+</body>
+</html>
